@@ -15,32 +15,26 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 // Función para manejar el envío del formulario
+// Función para manejar el envío del formulario
 export async function action({ request, params }: ActionFunctionArgs) {
     const data = Object.fromEntries(await request.formData());
-
-    let error = '';
-    if (Object.values(data).includes('')) {
-        error = 'Todos los campos son obligatorios';
+   
+    let error = "";
+    if (Object.values(data).includes("")) {
+      error = "Todos los campos son obligatorios";
     }
-
+   
     if (error.length) {
-        return { error };
+      return { error };
     }
-
+   
     if (params.id !== undefined) {
-        // Convertir datos del formulario a los tipos adecuados
-        const updatedProductData = {
-            name: data.name as string,
-            price: parseFloat(data.price as string),
-            availabity: data.availabity === 'true'
-        };
-
-        await updateProduct(updatedProductData, +params.id);
-        return redirect('/');
+      await updateProduct(data, +params.id);
+      return redirect("/");
     }
-
-    return { error: 'La actualización del producto falló' };
-}
+   
+    return { error: "La actualización del producto falló" };
+  }
 
 // Componente para editar un producto
 export default function EditProduct() {
